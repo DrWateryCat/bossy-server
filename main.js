@@ -47,25 +47,27 @@ router.route('/todo/:todo_id').get((req, res) => {
     Todo.findById(req.params.todo_id, (err, todo) => {
         if (err) {
             res.send(err);
+        } else {
+            res.status(200).json(todo);
         }
-        res.status(200).json(todo);
     });
 }).put((req, res) => {
     Todo.findById(req.params.todo_id, (err, todo) => {
         if(err) {
             res.send(err);
+        } else {
+
+            todo.title = req.body.title;
+            todo.desc = req.body.title;
+
+            todo.save((err) => {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
         }
-
-        todo.title = req.body.title;
-        todo.desc = req.body.title;
-
-        todo.save((err) => {
-            if (err) {
-                res.send(err);
-            }
-
-            res.sendStatus(200);
-        });
     });
 }).delete((req, res) => {
     Todo.remove({
@@ -73,9 +75,9 @@ router.route('/todo/:todo_id').get((req, res) => {
     }, (err) => {
         if (err) {
             res.send(err);
+        } else {
+            res.sendStatus(200);
         }
-
-        res.sendStatus(200);
     });
 });
 
